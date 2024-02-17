@@ -1,14 +1,13 @@
 export interface QentaDsGooglepayProps {
     [key: string]: any;
     secret? : string;
-    customerId?: string;
+    customerid?: string;
     language?: string;
-    shopId?: string;
+    shopid?: string;
     amount? : string;
     currency? :string;
-    countryCode? :string;
-    returnUrl?: string; // return url to your 'init' file
-    requestUrl? : string;
+    countrycode? :string;
+    returnurl?: string; 
 }
-declare const DsGooglePay: (props: QentaDsGooglepayProps) => any;
-export default DsGooglePay;
+declare const DsGooglepay: (props: QentaDsGooglepayProps) => any;
+export default DsGooglepay;

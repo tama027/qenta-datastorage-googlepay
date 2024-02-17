@@ -1,10 +1,11 @@
 "use strict";
+import axios from 'axios';
 
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const axios_1 = __importDefault(require("axios"));
+const axios_1 = __importDefault(axios);
 const crypto_js_1 = __importDefault(require("crypto-js"));
 const hmacSHA512 = crypto_js_1.default.HmacSHA512;
 const generateHmacSha512 = (key, data) => {
@@ -13,27 +14,26 @@ const generateHmacSha512 = (key, data) => {
 };
 
 
-const DsGooglePay = (props) => {
-    const url = props.requestUrl;
+const DsGooglepay = (props) => {
+    const url = "http://rhs-dev04.qenta.com/qmore/dataStorage/init";
     const characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-";
     let randomString = "";
     for (let i = 0; i < 10; i++) {
         randomString += characters[Math.floor(Math.random() * characters.length)];
     }
     const postFields = {
-        customerId: props.customerId || "",
+        customerId: props.customerid || "",
         language: props.language || "en",
-        shopId: props.shopId || "",
+        shopId: props.shopid || "",
         javascriptScriptVersion: "googlepay",
         orderIdent: randomString,
-        returnUrl:props.returnUrl || "",
-        // secret: props.secret || "",
+        returnUrl:props.returnurl || "",
         googlepaymerchantid : "qenta",
         googlepaymerchantname : "seamless",
-        googlepayallowedauthmethod : json_encode(["PAN_ONLY", "CRYPTOGRAM_3DS"]),
-        googlepayallowedcardnetwork :  json_encode(["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"]),
+        googlepayallowedauthmethod : JSON.stringify(["PAN_ONLY", "CRYPTOGRAM_3DS"]),
+        googlepayallowedcardnetwork :  JSON.stringify(["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"]),
         googlepaycurrencycode : props.currency || "", 
-        googlepaycountrycode :  props.countryCode || "", 
+        googlepaycountrycode :  props.countrycode || "", 
         googlepaytotalprice :  props.amount || "", 
     };
     const add_key = ["requestFingerprintOrder"];
@@ -111,4 +111,4 @@ const DsGooglePay = (props) => {
     };
     fetchData();
 };
-exports.default = DsGooglePay; 
+export default DsGooglepay; 
