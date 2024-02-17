@@ -1,11 +1,10 @@
 "use strict";
-import axios from 'axios';
-
+  
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const axios_1 = __importDefault(axios);
+const axios_1 = __importDefault(require("axios"));
 const crypto_js_1 = __importDefault(require("crypto-js"));
 const hmacSHA512 = crypto_js_1.default.HmacSHA512;
 const generateHmacSha512 = (key, data) => {
@@ -111,4 +110,4 @@ const DsGooglepay = (props) => {
     };
     fetchData();
 };
-export default DsGooglepay; 
+exports.default = DsGooglepay;
