@@ -1,5 +1,5 @@
 "use strict";
-  
+
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -12,9 +12,10 @@ const generateHmacSha512 = (key, data) => {
     return hmac.toString();
 };
 
-
+let count = 0;
 const DsGooglepay = (props) => {
-    const url = "http://rhs-dev04.qenta.com/qmore/dataStorage/init";
+    const formData = new FormData();
+    const url = '/qmore/dataStorage/init'; 
     const characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-";
     let randomString = "";
     for (let i = 0; i < 10; i++) {
@@ -22,11 +23,11 @@ const DsGooglepay = (props) => {
     }
     const postFields = {
         customerId: props.customerid || "",
-        language: props.language || "en",
         shopId: props.shopid || "",
-        javascriptScriptVersion: "googlepay",
         orderIdent: randomString,
         returnUrl:props.returnurl || "",
+        language: props.language || "en",
+        javascriptScriptVersion: "googlepay",
         googlepaymerchantid : "qenta",
         googlepaymerchantname : "seamless",
         googlepayallowedauthmethod : JSON.stringify(["PAN_ONLY", "CRYPTOGRAM_3DS"]),
@@ -35,31 +36,7 @@ const DsGooglepay = (props) => {
         googlepaycountrycode :  props.countrycode || "", 
         googlepaytotalprice :  props.amount || "", 
     };
-    const add_key = ["requestFingerprintOrder"];
-    const noneed_keys = [
-        "googlepaymerchantid",
-        "googlepaymerchantname",
-        "googlepayallowedauthmethod",
-        "googlepayallowedcardnetwork",
-        "googlepaycurrencycode",
-        "googlepaycountrycode",
-        "googlepaytotalprice",
-        "amount",
-        "countryCode",
-        "currency",
 
-    ];
-    const desiredOrder = [
-        "customerId",
-        "shopId",
-        "orderIdent",
-        "returnUrl",
-        "language",
-        "javascriptScriptVersion",
-        "secret",
-    ];
-    const filteredKeys = desiredOrder.filter((key) => !noneed_keys.includes(key));
-    const requestFingerprintOrder = [...filteredKeys, ...add_key].join(",");
     const addValue = [props.secret];
     const removeValue = [
         "googlepaymerchantid",
@@ -71,43 +48,62 @@ const DsGooglepay = (props) => {
         "googlepaytotalprice",
         "amount",
         "countryCode",
-        "currency",
+        "currency", 
     ];
     const valuesInOrder = Object.keys(postFields)
         .filter((key) => !removeValue.includes(key))
         .map((key) => postFields[key]);
+
     const cleanedValuesInOrder = valuesInOrder.filter((value) => value !== undefined && value !== null);
     const requestFingerprintSeed = [
-        ...addValue,
         ...cleanedValuesInOrder,
-        requestFingerprintOrder,
+        ...addValue,
     ].join("");
-    const hmacSha512Hash = generateHmacSha512(props.secret, requestFingerprintSeed);
-    const formData = new FormData();
+
+    const hmacSha512Hash = generateHmacSha512(props.secret.trim(), requestFingerprintSeed.trim());
     for (const key in postFields) {
         formData.append(key, postFields[key]);
     }
     formData.append("requestFingerprint", hmacSha512Hash);
-    formData.append('requestFingerprintOrder', requestFingerprintOrder);
-    const fetchData = async () => {
+    fetchData(url,formData,count++);
+};
+
+const fetchData = async (url,formData,count) => {
+    if(count == 0){
         try {
-            const response = await axios_1.default.post(url, formData);
+            const response = await axios_1.default.post(url,formData);
             const responseData = response.data;
-            if (responseData) {
-                const iframe = document.createElement('iframe');
-                iframe.title = "Response";
-                iframe.srcdoc = responseData;
-                iframe.style.width = "20%";
-                iframe.style.height = "60px";
-                iframe.style.borderWidth = "0";
-                document.body.appendChild(iframe);
+                if (responseData) {
+                    const urlParams = new URLSearchParams(responseData);
+                    const storageId = urlParams.get("storageId"); 
+                    const javascriptUrl = urlParams.get("javascriptUrl");
+                    
+                    const input = document.createElement("input");
+                    input.setAttribute("type", "hidden");
+                    input.setAttribute("id", "storageId");
+                    input.setAttribute("storageId", storageId);
+                    document.body.appendChild(input);    
+
+                    const iframe = document.createElement('iframe');
+                    var html = 
+                        "<head>"
+                        +"<script src=\'"+javascriptUrl+"\'></script>"
+                        +"</head>"
+                        +"<div id=\"googlePayIframe\"></div>"
+                        +"<script type=\"text/javascript\">"
+                        +"const wd = new QentaCEE_DataStorage();"
+                        +"wd.buildIframeGooglePay(\'googlePayIframe\', \'100%\', \'200px\');"
+                        +"</script>";
+                    iframe.srcdoc = html;
+                    iframe.style.width = "20%";
+                    iframe.style.height = "60px";
+                    document.body.appendChild(iframe);   
+                }
             }
-            console.log("response from ds :" + responseData); 
-        }
         catch (error) {
             console.error(error);
         }
-    };
-    fetchData();
+    }
 };
+
 exports.default = DsGooglepay;
