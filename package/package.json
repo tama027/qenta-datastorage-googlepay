@@ -1,6 +1,6 @@
 {
   "name": "qenta-datastorage-googlepay",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "qenta-datastorage-googlepay",
   "main": "dist/index.js",
   "files": [
