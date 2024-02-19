@@ -167,8 +167,7 @@ Inside your `.Html File` Add below code
 
  Example the iframe with googleplay button : 
 
-
-![alt gpaybtn](img/gpay_btn_pic.png)
+ ![Image Alt text](/img/gpay_btn_pic.png)
 
 beside iframe, it will also return storageId parameters
 
