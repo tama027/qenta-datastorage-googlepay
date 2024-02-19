@@ -165,11 +165,7 @@ Inside your `.Html File` Add below code
 
 ## Return Result
 
- Example the iframe with googleplay button : 
-
- ![Image Alt text](/img/gpay_btn_pic.png)
-
-beside iframe, it will also return storageId parameters
+beside iframe with googleplay button, DsGooglepay will also return storageId parameters
 
 - [storageId](https://guides.qenta.com/parameters/detailed-description/#storageId)
 
