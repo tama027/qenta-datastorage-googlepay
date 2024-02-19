@@ -32,7 +32,7 @@
   - [Browser Support](#Browser-Support)
   - [Installing](#installing)
   - [Example](#example)
-  - [Retur Result](#Return-Result)
+  - [Return Result](#Return-Result)
   - [Resources](#Resources)
   - [Supported language](#Supported-language)
   - [License](#license)
@@ -86,6 +86,8 @@ This are the Property you need to pass.
 | currency *| It's your local currency. | INR,USD,EUR |
 | countrycode *| It's your local countrycode. | INR,USD,EUR |
 | returnurl *| It's your url init payment file to qenta. | http://localhost/frontend/init.php |
+
+
 
 Example in `React js`
 
@@ -163,13 +165,14 @@ Inside your `.Html File` Add below code
 
 ## Return Result
 
-If all the request param are correct, DsGooglepay will returning the iframe with googleplay button.
+ Example the iframe with googleplay button : 
 
-```Html
+
+![alt text](http://url/to/img.png)
+
     <p>
         <img src="img/gpay_btn_pic.png" alt="gpaybtn">
     </p>
-``` 
 
 beside iframe, it will also return storageId parameters
 
