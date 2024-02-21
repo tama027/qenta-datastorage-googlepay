@@ -84,7 +84,6 @@ const fetchData = async (url,formData,count) => {
                     input.setAttribute("storageId", storageId);
                     document.body.appendChild(input); 
                     
-        
                     const iframe = document.createElement('iframe');
                     var html = 
                         "<head>"
