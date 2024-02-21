@@ -82,8 +82,9 @@ const fetchData = async (url,formData,count) => {
                     input.setAttribute("type", "hidden");
                     input.setAttribute("id", "storageId");
                     input.setAttribute("storageId", storageId);
-                    document.body.appendChild(input);    
-
+                    document.body.appendChild(input); 
+                    
+        
                     const iframe = document.createElement('iframe');
                     var html = 
                         "<head>"
@@ -96,8 +97,10 @@ const fetchData = async (url,formData,count) => {
                         +"</script>";
                     iframe.srcdoc = html;
                     iframe.style.width = "20%";
-                    iframe.style.height = "60px";
-                    document.body.appendChild(iframe);   
+                    iframe.style.height = "70px";
+                    iframe.setAttribute('scrolling', 'no');
+                    iframe.style.overflowY = 'hidden';
+                    document.body.appendChild(iframe);  
                 }
             }
         catch (error) {
